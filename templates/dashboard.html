@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <section class="section">
+    <div class="section-header">
+      <h1>Participation dashboard</h1>
+      <p>Quick overview of student involvement across events.</p>
+    </div>
+
+    <div class="summary-grid">
+      <div class="card summary-card">
+        <h2>Total registrations</h2>
+        <p class="summary-number">{{ summary.total_registrations }}</p>
+      </div>
+      <div class="card summary-card">
+        <h2>Unique students</h2>
+        <p class="summary-number">{{ summary.unique_students }}</p>
+      </div>
+      <div class="card summary-card">
+        <h2>Active events</h2>
+        <p class="summary-number">{{ summary.total_events }}</p>
+      </div>
+    </div>
+
+    <div class="layout-two-column">
+      <div class="card">
+        <h2>Registrations per event</h2>
+        <canvas id="events-chart" height="240"></canvas>
+      </div>
+      <div class="card">
+        <h2>Events per student</h2>
+        <canvas id="students-chart" height="240"></canvas>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+
+{% block scripts %}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    window.eventData = {{ event_participation | tojson }};
+    window.studentData = {{ student_participation | tojson }};
+  </script>
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}
+

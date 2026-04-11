@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <section class="section">
+    <a href="{{ url_for('home') }}" class="back-link">← Back to all events</a>
+    <div class="layout-two-column">
+      <div>
+        <span class="pill">{{ event.category or "General" }}</span>
+        <h1>{{ event.title }}</h1>
+        <p class="event-meta">
+          <span>{{ event.date.strftime("%A, %d %B %Y") }}</span>
+          <span>
+            {{ event.start_time.strftime("%H:%M") }}–{{ event.end_time.strftime("%H:%M") }}
+          </span>
+        </p>
+        <p class="event-meta">Location: {{ event.location }}</p>
+        <p class="event-description">{{ event.description }}</p>
+
+        <p class="event-meta">
+          Registered:
+          {{ event.registrations|length }}
+          {% if event.capacity %}
+            / {{ event.capacity }}
+          {% endif %}
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>Register for this event</h2>
+        <form action="{{ url_for('register') }}" method="post" class="form">
+          <input type="hidden" name="event_id" value="{{ event.id }}" />
+          <label>
+            Full name
+            <input type="text" name="name" placeholder="Your name" required />
+          </label>
+          <label>
+            Email
+            <input type="email" name="email" placeholder="you@example.edu" required />
+          </label>
+          <button type="submit" class="primary-btn">Register</button>
+          <p class="helper-text">
+            For this prototype, your email identifies you across events.
+          </p>
+        </form>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+
