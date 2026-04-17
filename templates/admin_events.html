@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <section class="section">
+    <div class="section-header">
+      <h1>Manage events</h1>
+      <a href="{{ url_for('admin_create_event') }}" class="primary-btn">+ New event</a>
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Category</th>
+            <th>Location</th>
+            <th>Registrations</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for event in events %}
+            <tr>
+              <td>{{ event.title }}</td>
+              <td>{{ event.date.strftime("%d %b %Y") }}</td>
+              <td>{{ event.start_time.strftime("%H:%M") }}–{{ event.end_time.strftime("%H:%M") }}</td>
+              <td>{{ event.category or "—" }}</td>
+              <td>{{ event.location }}</td>
+              <td>{{ event.registrations|length }}</td>
+              <td class="table-actions">
+                <a href="{{ url_for('admin_edit_event', event_id=event.id) }}">Edit</a>
+                <form
+                  action="{{ url_for('admin_delete_event', event_id=event.id) }}"
+                  method="post"
+                  onsubmit="return confirm('Delete this event?');"
+                >
+                  <button type="submit" class="link-btn danger">Delete</button>
+                </form>
+              </td>
+            </tr>
+          {% else %}
+            <tr>
+              <td colspan="7">No events yet.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+{% endblock %}
+

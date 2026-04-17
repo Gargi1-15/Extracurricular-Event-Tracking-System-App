@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">Campus Activity Portal</p>
+      <h1>Discover, Register, and Track Your Extracurricular Journey</h1>
+      <p>
+        Explore events across technology, sports, arts, and leadership. Register quickly,
+        monitor participation, and stay active on campus.
+      </p>
+      <div class="hero-actions">
+        <a href="#upcoming-events" class="primary-btn">Browse events</a>
+        <a href="{{ url_for('dashboard') }}" class="link-btn">View dashboard</a>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3>{{ summary.total_events }}</h3>
+          <p>Total events</p>
+        </div>
+        <div class="stat-card">
+          <h3>{{ summary.total_registrations }}</h3>
+          <p>Registrations</p>
+        </div>
+        <div class="stat-card">
+          <h3>{{ summary.unique_students }}</h3>
+          <p>Active students</p>
+        </div>
+      </div>
+    </div>
+
+    <form class="recommendation-form" id="recommendation-form">
+      <label for="rec-email">Get recommended events</label>
+      <div class="inline-input">
+        <input
+          type="email"
+          id="rec-email"
+          name="email"
+          placeholder="Enter your student email"
+          required
+        />
+        <button type="submit">Suggest for me</button>
+      </div>
+      <p class="helper-text">Prototype AI feature: uses your past registrations.</p>
+    </form>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <h2>Why use this platform?</h2>
+      <p>Built for students and event coordinators.</p>
+    </div>
+    <div class="cards-grid feature-grid">
+      <article class="card">
+        <h3>Easy event registration</h3>
+        <p class="card-location">
+          Students can discover activities, open event details, and register in one step.
+        </p>
+      </article>
+      <article class="card">
+        <h3>Admin event management</h3>
+        <p class="card-location">
+          Admins can create, update, and manage event capacity from one panel.
+        </p>
+      </article>
+      <article class="card">
+        <h3>Participation tracking</h3>
+        <p class="card-location">
+          Dashboard insights show student involvement and event participation trends.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" id="upcoming-events">
+    <div class="section-header">
+      <h2>Upcoming Events</h2>
+      <p>Click any card to view details and register.</p>
+    </div>
+    <div class="cards-grid">
+      {% if events %}
+        {% for event in events %}
+          <a href="{{ url_for('event_detail', event_id=event.id) }}" class="card event-card">
+            <div class="card-badge">{{ event.category or "General" }}</div>
+            <h3>{{ event.title }}</h3>
+            <p class="card-meta">
+              <span>{{ event.date.strftime("%d %b %Y") }}</span>
+              <span>
+                {{ event.start_time.strftime("%H:%M") }}–{{ event.end_time.strftime("%H:%M") }}
+              </span>
+            </p>
+            <p class="card-location">{{ event.location }}</p>
+            <p class="card-registrations">
+              {{ event.registrations|length }} registered
+              {% if event.capacity %}
+                · capacity {{ event.capacity }}
+              {% endif %}
+            </p>
+          </a>
+        {% endfor %}
+      {% else %}
+        <p>No events yet. Check back soon!</p>
+      {% endif %}
+    </div>
+  </section>
+
+  <section class="section" id="recommendations">
+    <div class="section-header">
+      <h2>Recommended for you</h2>
+      <p id="rec-subtitle">Enter your email above to see suggestions.</p>
+    </div>
+    <div class="cards-grid" id="recommendations-list"></div>
+  </section>
+
+  <section class="section" id="contact">
+    <div class="section-header">
+      <h2>Contact Us</h2>
+      <p>Share your questions, support requests, or partnership ideas.</p>
+    </div>
+    <div class="layout-two-column">
+      <article class="card">
+        <h3>Get in touch</h3>
+        <p class="card-location">
+          We usually respond within 1-2 working days for prototype support and queries.
+        </p>
+        <p class="card-location"><strong>Email:</strong> support@extrahub.edu</p>
+        <p class="card-location"><strong>Phone:</strong> +91 98765 43210</p>
+        <p class="card-location"><strong>Office:</strong> Student Affairs Block, Campus Main</p>
+      </article>
+
+      <form action="{{ url_for('contact') }}" method="post" class="form card contact-form">
+        <label>
+          Full name
+          <input type="text" name="name" required />
+        </label>
+        <label>
+          Email
+          <input type="email" name="email" required />
+        </label>
+        <label>
+          Subject
+          <input type="text" name="subject" required />
+        </label>
+        <label>
+          Message
+          <textarea name="message" rows="4" required></textarea>
+        </label>
+        <button type="submit" class="primary-btn">Send message</button>
+      </form>
+    </div>
+  </section>
+{% endblock %}
+
