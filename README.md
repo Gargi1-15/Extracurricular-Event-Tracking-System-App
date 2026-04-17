@@ -61,3 +61,7 @@ Otherwise data may reset on restart.
 
 This endpoint is deliberately simple so you can later replace the logic with a real recommendation model.
 
+## 5. Live Demo
+
+extracurricular-event-tracking-syst.vercel.app
+
