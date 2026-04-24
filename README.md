@@ -69,6 +69,6 @@ Set these in your deployment platform (or local env) to enable email sending:
 - `SMTP_FROM` (optional; defaults to `SMTP_USER`)
 - `SMTP_USE_TLS` (`true` by default; set `false` only if your SMTP provider requires it)
 
-- ## 6. Live demo
+## 6. Live demo
 
-extracurricular-event-tracking-system-app-production.up.railway.app
+🔗 [View Application](https://extracurricular-event-tracking-system-app-production.up.railway.app)
