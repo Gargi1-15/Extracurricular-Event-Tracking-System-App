@@ -71,4 +71,4 @@ Set these in your deployment platform (or local env) to enable email sending:
 
 - ## 6. Live demo
 
-- 🔗extracurricular-event-tracking-system-app-production.up.railway.app
+- extracurricular-event-tracking-system-app-production.up.railway.app
