@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <section class="section">
+    <a href="{{ url_for('admin_events') }}" class="back-link">← Back to Manage events</a>
+    <div class="section-header">
+      <h1>Participants: {{ event.title }}</h1>
+      <p>
+        {{ registrations|length }} registered
+        {% if event.capacity %}
+          out of {{ event.capacity }}
+        {% endif %}
+      </p>
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Student name</th>
+            <th>Email</th>
+            <th>Registered at</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for reg in registrations %}
+            <tr>
+              <td>{{ reg.student.name }}</td>
+              <td>{{ reg.student.email }}</td>
+              <td>{{ reg.registered_at.strftime("%d %b %Y %H:%M") }}</td>
+              <td class="table-actions">
+                <form
+                  action="{{ url_for('admin_remove_participant', event_id=event.id, registration_id=reg.id) }}"
+                  method="post"
+                  onsubmit="return confirm('Remove this student from this event?');"
+                >
+                  <button type="submit" class="link-btn danger">Remove</button>
+                </form>
+              </td>
+            </tr>
+          {% else %}
+            <tr>
+              <td colspan="4">No students registered yet for this event.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+{% endblock %}
+

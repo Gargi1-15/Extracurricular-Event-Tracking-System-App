@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <section class="section narrow">
+    <h1>My registrations</h1>
+    <p class="helper-text">Enter your email to see all events you have registered for.</p>
+
+    <form method="post" action="{{ url_for('my_registrations') }}" class="form card">
+      <label>
+        Student email
+        <input
+          type="email"
+          name="email"
+          placeholder="you@example.edu"
+          value="{{ email }}"
+          required
+        />
+      </label>
+      <button type="submit" class="primary-btn">Check my events</button>
+    </form>
+  </section>
+
+  {% if email %}
+    <section class="section">
+      <div class="section-header">
+        <h2>Registered events</h2>
+        <p>{{ registrations|length }} found</p>
+      </div>
+
+      {% if student and registrations %}
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Event</th>
+                <th>Category</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Location</th>
+                <th>Registered at</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for reg in registrations %}
+                <tr>
+                  <td>
+                    <a href="{{ url_for('event_detail', event_id=reg.event.id) }}">{{ reg.event.title }}</a>
+                  </td>
+                  <td>{{ reg.event.category or "General" }}</td>
+                  <td>{{ reg.event.date.strftime("%d %b %Y") }}</td>
+                  <td>
+                    {{ reg.event.start_time.strftime("%H:%M") }}-{{ reg.event.end_time.strftime("%H:%M") }}
+                  </td>
+                  <td>{{ reg.event.location }}</td>
+                  <td>{{ reg.registered_at.strftime("%d %b %Y %H:%M") }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% elif student %}
+        <div class="card">
+          <p>You are not registered for any event yet.</p>
+          <a href="{{ url_for('home') }}" class="link-btn">Browse events</a>
+        </div>
+      {% endif %}
+    </section>
+  {% endif %}
+{% endblock %}
+

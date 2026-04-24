@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <section class="section narrow">
+    <h1>{{ "Edit event" if event else "Create event" }}</h1>
+    <form
+      action="{{ url_for('admin_edit_event', event_id=event.id) if event else url_for('admin_create_event') }}"
+      method="post"
+      class="form card"
+    >
+      <label>
+        Title
+        <input type="text" name="title" value="{{ event.title if event else '' }}" required />
+      </label>
+
+      <label>
+        Description
+        <textarea name="description" rows="4" required>{{ event.description if event else "" }}</textarea>
+      </label>
+
+      <label>
+        Category
+        <input
+          type="text"
+          name="category"
+          value="{{ event.category if event else '' }}"
+          placeholder="Technology, Sports, Arts…"
+        />
+      </label>
+
+      <label>
+        Location
+        <input type="text" name="location" value="{{ event.location if event else '' }}" required />
+      </label>
+
+      <div class="form-row">
+        <label>
+          Date
+          <input
+            type="date"
+            name="date"
+            value="{{ event.date.isoformat() if event else '' }}"
+            required
+          />
+        </label>
+        <label>
+          Start time
+          <input
+            type="time"
+            name="start_time"
+            value="{{ event.start_time.strftime('%H:%M') if event else '' }}"
+            required
+          />
+        </label>
+        <label>
+          End time
+          <input
+            type="time"
+            name="end_time"
+            value="{{ event.end_time.strftime('%H:%M') if event else '' }}"
+            required
+          />
+        </label>
+      </div>
+
+      <label>
+        Capacity (optional)
+        <input
+          type="number"
+          name="capacity"
+          min="1"
+          value="{{ event.capacity if event and event.capacity is not none else '' }}"
+        />
+      </label>
+
+      <label class="checkbox-row">
+        <input type="checkbox" name="is_paid" {% if event and event.is_paid %}checked{% endif %} />
+        <span>This is a paid event</span>
+      </label>
+
+      <label>
+        Fee amount (optional)
+        <input
+          type="number"
+          name="fee_amount"
+          min="0"
+          step="0.01"
+          value="{{ event.fee_amount if event and event.fee_amount is not none else '' }}"
+        />
+      </label>
+
+      <label>
+        Payment method
+        <input
+          type="text"
+          name="payment_method"
+          value="{{ event.payment_method if event and event.payment_method else '' }}"
+          placeholder="UPI / Bank transfer / Card"
+        />
+      </label>
+
+      <label>
+        Payment details
+        <textarea
+          name="payment_details"
+          rows="3"
+          placeholder="UPI ID, account details, or payment instructions"
+        >{{ event.payment_details if event and event.payment_details else '' }}</textarea>
+      </label>
+
+      <div class="form-actions">
+        <a href="{{ url_for('admin_events') }}" class="link-btn">Cancel</a>
+        <button type="submit" class="primary-btn">
+          {{ "Save changes" if event else "Create event" }}
+        </button>
+      </div>
+    </form>
+  </section>
+{% endblock %}
+
